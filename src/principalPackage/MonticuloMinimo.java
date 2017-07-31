@@ -12,7 +12,7 @@ public class MonticuloMinimo extends Monticulo {
 		if (!this.esHoja(i)) {
 			if (!this.tieneHijoUnico(i)) {
 				if (!this.condicion(this.hijoIzquierdo(i), i) || !this.condicion(this.hijoDerecho(i), i)) {
-					if (this.nodo[this.hijoIzquierdo(i)] < this.nodo[this.hijoDerecho(i)]) {
+					if (!this.condicion(this.hijoIzquierdo(i), this.hijoDerecho(i))) {
 						this.intercambiar(i, this.hijoIzquierdo(i));
 						this.montando(this.hijoIzquierdo(i));
 					} else {
@@ -21,8 +21,10 @@ public class MonticuloMinimo extends Monticulo {
 					}
 				}
 			} else {
-				this.intercambiar(i, this.hijoIzquierdo(i));
-				this.montando(this.hijoIzquierdo(i));
+				if (!this.condicion(this.hijoIzquierdo(i), i)) {
+					this.intercambiar(i, this.hijoIzquierdo(i));
+					this.montando(this.hijoIzquierdo(i));
+				}
 			}
 		}
 	}
