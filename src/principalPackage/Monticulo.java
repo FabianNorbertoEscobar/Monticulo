@@ -45,7 +45,7 @@ public abstract class Monticulo {
 	}
 	
 	protected boolean esHoja(int i) {
-		return i >= this.tamaño / 2 && i <= this.tamaño;
+		return !this.tieneHijoIzquierdo(i) && !this.tieneHijoDerecho(i);
 	}
 	
 	protected void intercambiar(int i, int j) {

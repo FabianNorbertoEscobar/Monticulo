@@ -34,6 +34,34 @@ public class Main {
 			System.out.println("Raíz del montículo de Máximo: " + maxHeap.pispear());
 		}
 		System.out.println("Montículos vacíos");
+		
+		System.out.println("Ordenamiento de un vector");
+		int[] v1 = new int[20];
+		int[] v2 = new int[20];
+		for (int i = 0; i < 20; i++) {
+			v1[i] = rand.nextInt(30);
+			v2[i] = v1[i];
+		}
+		
+		System.out.println("Vector desordenado");
+		for (int i = 0; i < v1.length; i++) {
+			System.out.print(v1[i] + " ");
+		}
+		System.out.println();
+		
+		HeapSort.sort(v1);
+		System.out.println("Sort:");
+		for (int i : v1) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
+		
+		HeapSort.reverseSort(v2);
+		System.out.println("ReverseSort");
+		for (int i : v2) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
 	}
 
 }
