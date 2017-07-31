@@ -12,15 +12,15 @@ public abstract class Monticulo {
 		this.nodo = new int[tamañoMaximo + 1];
 	}
 	
-	protected int padre(int i) {
+	private int padre(int i) {
 		return i / 2;
 	}
 	
-	protected int hijoIzquierdo(int i) {
+	private int hijoIzquierdo(int i) {
 		return 2 * i;
 	}
 	
-	protected int hijoDerecho(int i) {
+	private int hijoDerecho(int i) {
 		return 2 * i + 1;
 	}
 	
@@ -32,7 +32,7 @@ public abstract class Monticulo {
 		return this.hijoDerecho(i) <= this.tamaño;
 	}
 	
-	protected boolean tieneHijoUnico(int i) {
+	private boolean tieneHijoUnico(int i) {
 		return this.tieneHijoIzquierdo(i) && !this.tieneHijoDerecho(i);
 	}
 	
@@ -56,31 +56,53 @@ public abstract class Monticulo {
 	
 	private void montar() {
 		for (int i = this.tamaño / 2; i >= 1; i--) {
-			this.montando(i);
+			this.hundir(i);
 		}
 	}
 	
-	protected abstract void montando(int i);
+	private void flotar(int actual) {
+		while (!this.condicion(actual, this.padre(actual))) {
+			this.intercambiar(actual, this.padre(actual));
+			actual = this.padre(actual);
+		}
+	}
+	
+	private void hundir(int i) {
+		if (!this.esHoja(i)) {
+			if (!this.tieneHijoUnico(i)) {
+				if (!this.condicion(this.hijoIzquierdo(i), i) || !this.condicion(this.hijoDerecho(i), i)) {
+					if (!this.condicion(this.hijoIzquierdo(i), this.hijoDerecho(i))) {
+						this.intercambiar(i, this.hijoIzquierdo(i));
+						this.hundir(this.hijoIzquierdo(i));
+					} else {
+						this.intercambiar(this.hijoDerecho(i), i);
+						this.hundir(this.hijoDerecho(i));
+					}
+				}
+			} else {
+				if (!this.condicion(this.hijoIzquierdo(i), i)) {
+					this.intercambiar(i, this.hijoIzquierdo(i));
+					this.hundir(this.hijoIzquierdo(i));
+				}
+			}
+		}
+	}
 	
 	protected abstract boolean condicion(int hijo, int padre);
 	
 	public void insertar(int nuevo) {
 		if (!this.estaLleno()) {
 			this.nodo[++this.tamaño] = nuevo;
-			int actual = tamaño;
-			while (!this.condicion(actual, this.padre(actual))) {
-				this.intercambiar(actual, this.padre(actual));
-				actual = this.padre(actual);
-			}
+			this.flotar(this.tamaño);
 			this.montar();
 		}
 	}
-	
+
 	public int eliminar() {
 		if (!this.estaVacio()) {
 			int nodo = this.nodo[RAIZ];
 			this.nodo[RAIZ] = this.nodo[this.tamaño--];
-			this.montando(RAIZ);
+			this.hundir(RAIZ);
 			return nodo;
 		} else {
 			return this.nodo[0];
