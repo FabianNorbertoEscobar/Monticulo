@@ -12,7 +12,7 @@ public abstract class Monticulo {
 		this.nodo = new int[tamañoMaximo + 1];
 	}
 	
-	private int padre(int i) {
+	protected int padre(int i) {
 		return i / 2;
 	}
 	
@@ -33,14 +33,10 @@ public abstract class Monticulo {
 	}
 	
 	protected boolean esHoja(int i) {
-		if (i >= this.tamaño / 2 && i <= this.tamaño) {
-			return true;
-		} else {
-			return false;
-		}
+		return i >= this.tamaño / 2 && i <= this.tamaño;
 	}
 	
-	private void intercambiar(int i, int j) {
+	protected void intercambiar(int i, int j) {
 		int tmp = this.nodo[i];
 		this.nodo[i] = this.nodo[j];
 		this.nodo[j] = tmp;
@@ -60,7 +56,7 @@ public abstract class Monticulo {
 		if (!this.estaLleno()) {
 			this.nodo[++this.tamaño] = nuevo;
 			int actual = tamaño;
-			while (!this.condicion(this.nodo[actual], this.nodo[this.padre(actual)])) {
+			while (!this.condicion(actual, this.padre(actual))) {
 				this.intercambiar(actual, this.padre(actual));
 				actual = this.padre(actual);
 			}
