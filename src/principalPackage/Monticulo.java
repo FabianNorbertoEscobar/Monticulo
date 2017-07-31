@@ -24,6 +24,14 @@ public abstract class Monticulo {
 		return 2 * i + 1;
 	}
 	
+	private boolean tieneHijoIzquierdo(int i) {
+		return this.hijoIzquierdo(i) <= this.tamaño;
+	}
+	
+	private boolean tieneHijoDerecho(int i) {
+		return this.hijoDerecho(i) <= this.tamaño;
+	}
+	
 	public boolean estaVacio() {
 		return this.tamaño == 0;
 	}
@@ -82,8 +90,12 @@ public abstract class Monticulo {
 	public void mostrar() {
 		for (int i = 1; i <= this.tamaño / 2; i++) {
 			System.out.print("Padre: " + this.nodo[i]);
-			System.out.print(" HijoIzquierdo: " + this.nodo[2 * i]);
-			System.out.print(" HIjoDerecho: " + this.nodo[2 * i + 1]);
+			if (this.tieneHijoIzquierdo(i)) {
+				System.out.print(" HijoIzquierdo: " + this.nodo[2 * i]);
+			}
+			if (this.tieneHijoDerecho(i)) {
+				System.out.print(" HijoDerecho: " + this.nodo[2 * i + 1]);
+			}
 			System.out.println();
 		}
 	}
