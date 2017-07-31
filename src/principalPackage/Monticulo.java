@@ -32,6 +32,10 @@ public abstract class Monticulo {
 		return this.hijoDerecho(i) <= this.tamaño;
 	}
 	
+	protected boolean tieneHijoUnico(int i) {
+		return this.tieneHijoIzquierdo(i) && !this.tieneHijoDerecho(i);
+	}
+	
 	public boolean estaVacio() {
 		return this.tamaño == 0;
 	}
@@ -58,7 +62,7 @@ public abstract class Monticulo {
 	
 	protected abstract void montando(int i);
 	
-	protected abstract boolean condicion(int child, int parent);
+	protected abstract boolean condicion(int hijo, int padre);
 	
 	public void insertar(int nuevo) {
 		if (!this.estaLleno()) {
@@ -84,7 +88,11 @@ public abstract class Monticulo {
 	}
 	
 	public int pispear() {
-		return this.nodo[RAIZ];
+		if (!this.estaVacio()) {
+			return this.nodo[RAIZ];
+		} else {
+			return this.nodo[0];
+		}
 	}
 	
 	public void mostrar() {
