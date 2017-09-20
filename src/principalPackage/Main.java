@@ -30,8 +30,12 @@ public class Main {
 			minHeap.eliminar();
 			maxHeap.eliminar();
 			System.out.println("Luego de " + (i+1) + "° eliminación:");
-			System.out.println("Raíz del montículo de Mínimo: " + minHeap.pispear());
-			System.out.println("Raíz del montículo de Máximo: " + maxHeap.pispear());
+			if (!minHeap.estaVacio()) {
+				System.out.println("Raíz del montículo de Mínimo: " + minHeap.pispear());
+			}
+			if (!maxHeap.estaVacio()) {
+				System.out.println("Raíz del montículo de Máximo: " + maxHeap.pispear());
+			}
 		}
 		System.out.println("Montículos vacíos");
 		
