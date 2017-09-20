@@ -15,7 +15,8 @@ Los Montículos binarios (binary heaps en inglés) son un caso particular y senc
 Cada nodo contiene un valor superior al de sus hijos (para un montículo por máximos) o más pequeño que el de sus hijos (para un montículo por mínimos).
 Árbol semicompleto
 El árbol está balanceado y en un mismo nivel las inserciones se realizan de izquierda a derecha.
-Los montículos por mínimos se utilizan frecuentemente para representar colas de prioridad. A continuación se muestran dos montículos: el primero por mínimos y el segundo por máximos, que representan el mismo conjunto de valores y además son semicompletos.
+
+Los montículos por mínimos se utilizan frecuentemente para representar colas de prioridad.
 
 ## Inserción de un elemento
 La inserción de un elemento se realiza agregando el elemento en la posición que respeta la restricción de árbol semicompleto pero posiblemente invalidando la propiedad de montículo, para luego remontar hacia la raíz restaurando la propiedad de montículo por intercambio del valor de la posición desordenada por el valor de su padre. Esta reorganización se realiza en tiempo O(log n).
