@@ -1,4 +1,4 @@
-package principalPackage;
+package monticulo;
 
 public class MonticuloMinimo extends Monticulo {
 

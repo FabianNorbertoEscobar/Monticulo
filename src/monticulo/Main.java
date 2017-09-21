@@ -1,4 +1,4 @@
-package principalPackage;
+package monticulo;
 
 import java.util.Random;
 
