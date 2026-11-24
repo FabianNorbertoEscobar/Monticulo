@@ -1,36 +1,107 @@
-# Montículo
-Montículo de mínimos y montículo de máximos, implementación estática en un vector
+# Montículos binarios en Java
 
-En computación, un montículo (o heap en inglés) es una estructura de datos del tipo árbol con información perteneciente a un conjunto ordenado. Los montículos máximos tienen la característica de que cada nodo padre tiene un valor mayor que el de cualquiera de sus nodos hijos, mientras que en los montículos mínimos, el valor del nodo padre es siempre menor al de sus nodos hijos.
+Proyecto de prácticas para implementar montículos binarios de mínimos y de máximos, y utilizarlos como colas de prioridad y para ordenar vectores con HeapSort.
 
-Un árbol cumple la condición de montículo si satisface dicha condición y además es un árbol binario casi completo. Un árbol binario es completo cuando todos los niveles están llenos, con la excepción del último, que se llena desde la izquierda hacia la derecha.
+## Contenido
 
-En un montículo de prioridad, el mayor elemento (o el menor, dependiendo de la relación de orden escogida) está siempre en el nodo raíz. Por esta razón, los montículos son útiles para implementar colas de prioridad. Una ventaja que poseen los montículos es que, por ser árboles completos, se pueden implementar usando arreglos (arrays), lo cual simplifica su codificación y libera al programador del uso de punteros.
+- [Objetivos de aprendizaje](#objetivos-de-aprendizaje)
+- [Tecnologías](#tecnologías)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Cómo funciona](#cómo-funciona)
+- [Funcionalidades](#funcionalidades)
+- [Complejidad](#complejidad)
+- [Ejecutar el ejemplo](#ejecutar-el-ejemplo)
+- [Pruebas](#pruebas)
+- [Ideas para seguir practicando](#ideas-para-seguir-practicando)
 
-La eficiencia de las operaciones en los montículos es crucial en diversos algoritmos de recorrido
+## Objetivos de aprendizaje
 
-Los Montículos binarios (binary heaps en inglés) son un caso particular y sencillo de la estructura de datos Montículo, y está basada en un árbol binario balanceado, que puede verse como un árbol binario con dos restricciones adicionales:
+El proyecto sirve para practicar:
 
-### Propiedad de montículo
-Cada nodo contiene un valor superior al de sus hijos (para un montículo por máximos) o más pequeño que el de sus hijos (para un montículo por mínimos).
-Árbol semicompleto
-El árbol está balanceado y en un mismo nivel las inserciones se realizan de izquierda a derecha.
+- Árboles binarios casi completos representados con arreglos.
+- Herencia y clases abstractas para compartir comportamiento entre variantes.
+- Colas de prioridad y operaciones de inserción, consulta y extracción.
+- Reordenamiento de elementos mediante las operaciones de un montículo.
+- Pruebas unitarias con JUnit.
 
-Los montículos por mínimos se utilizan frecuentemente para representar colas de prioridad.
+## Tecnologías
 
-## Inserción de un elemento
-La inserción de un elemento se realiza agregando el elemento en la posición que respeta la restricción de árbol semicompleto pero posiblemente invalidando la propiedad de montículo, para luego remontar hacia la raíz restaurando la propiedad de montículo por intercambio del valor de la posición desordenada por el valor de su padre. Esta reorganización se realiza en tiempo O(log n).
+- **Java 8** (configurado en el proyecto de Eclipse).
+- **JUnit 4** para las pruebas.
+- **Eclipse IDE** como configuración de proyecto incluida (`.project` y `.classpath`).
 
-## Eliminación del elemento máximo
-Para borrar el elemento máximo del montículo, de la manera más eficiente se puede tomar el elemento de la posición que debe quedar vacía, colocándolo en la raíz (así cumpliendo la propiedad de árbol completo), y luego intercambiar ese valor con el máximo de sus hijos hasta satisfacer la propiedad de montículo (si es de máximos), o intercambiarlo con el mínimo de sus hijos (si es de mínimos). Esta reorganización se puede realizar también en tiempo O(log n).
+No se incluye Maven ni Gradle; el proyecto usa las carpetas `src` y `test` como raíces de código fuente.
 
-## Implementación en un vector
-La posición cero no se utiliza y la raíz del montículo se almacena en la posición 1. Para un nodo en la posición i, su padre se encuentra en parte_entera(i/2), su hijo izquerdo en la posición 2*i y su hijo derecho en la posición 2*i+1.
+## Estructura del proyecto
 
-## Ordenamiento HEAPSORT
-Los montículos tienen la particularidad de que siempre en su raíz tiene alojado al valor mínimo (en el caso de los montículos de mínimos) o al valor máximo (en el caso de los montículos de máximos). Por lo tanto, al eliminar un nodo de un montículo, la nueva raíz será mayor o igual a la raíz anterior de un montículo de mínimos, o será menor o igual en un montículo de máximos.
-Debido a esto, se pueden utilizar para ordenamiento: creando un montículo, insertando todos los valores del vector a ordenar y luego, eliminándolos uno a uno escribiéndolos nuevamente en el vector, en el orden en que van saliendo.
-## Sort
-Ordena de forma ascendente y utiliza un montículo de mínimos
-## ReverseSort
-Ordena de forma descendente y utiliza un montículo de máximos
+```text
+src/
+└── monticulo/
+    ├── Monticulo.java         # Comportamiento común y almacenamiento
+    ├── MonticuloMinimo.java   # Prioridad para el menor elemento
+    ├── MonticuloMaximo.java   # Prioridad para el mayor elemento
+    ├── HeapSort.java          # Orden ascendente y descendente
+    └── Main.java              # Ejemplo ejecutable
+test/
+└── monticulo/
+    ├── MonticuloMinimoTest.java
+    └── MonticuloMaximoTest.java
+```
+
+## Cómo funciona
+
+Un montículo binario es un árbol casi completo que satisface una propiedad de prioridad:
+
+- En un **montículo mínimo**, cada padre es menor o igual que sus hijos; la raíz contiene el mínimo.
+- En un **montículo máximo**, cada padre es mayor o igual que sus hijos; la raíz contiene el máximo.
+
+El árbol se almacena en un arreglo de tamaño fijo. Se deja libre la posición `0` y la raíz se guarda en la posición `1`. Para un nodo en la posición `i`, el hijo izquierdo está en `2 * i`, el derecho en `2 * i + 1` y el padre en `i / 2`.
+
+`Monticulo` implementa el almacenamiento y las operaciones comunes. Las subclases `MonticuloMinimo` y `MonticuloMaximo` definen la relación de orden a través de `condicion`, por lo que comparten el algoritmo y difieren en cuál valor tiene prioridad.
+
+## Funcionalidades
+
+| Operación | Descripción |
+| --- | --- |
+| `insertar(int)` | Agrega un elemento si queda capacidad. |
+| `eliminar()` | Extrae y devuelve la raíz, es decir, el elemento prioritario. |
+| `pispear()` | Devuelve la raíz sin extraerla. |
+| `estaVacio()` | Indica si no hay elementos. |
+| `estaLleno()` | Indica si se alcanzó la capacidad máxima. |
+| `mostrar()` | Imprime cada padre con los hijos que tenga. |
+| `HeapSort.sort(int[])` | Ordena el arreglo de menor a mayor mediante un montículo mínimo. |
+| `HeapSort.reverseSort(int[])` | Ordena el arreglo de mayor a menor mediante un montículo máximo. |
+
+La capacidad se fija al construir el montículo y no aumenta automáticamente. Insertar en un montículo lleno, o consultar/eliminar uno vacío, lanza `IllegalStateException`. Se permiten valores duplicados.
+
+## Complejidad
+
+En un montículo binario convencional, consultar la raíz cuesta **O(1)**, y tanto insertar como extraer la raíz cuestan **O(log n)**. Sin embargo, la implementación de este proyecto vuelve a ejecutar `montar()` después de cada inserción. Como ese método recorre y hunde los nodos internos, **la inserción aquí puede costar O(n)**; por ello, `HeapSort` con inserciones sucesivas puede llegar a **O(n²)** en lugar de la complejidad habitual **O(n log n)**. El almacenamiento es **O(n)**.
+
+Eliminar la raíz reorganiza el montículo hundiendo el nuevo elemento, con coste **O(log n)**. La reconstrucción completa tras insertar es una oportunidad para practicar una optimización: mantener el montículo con `flotar()` y no reconstruirlo en cada inserción.
+
+## Ejecutar el ejemplo
+
+Con un JDK instalado, desde la raíz del repositorio:
+
+```bash
+mkdir -p out
+javac -encoding UTF-8 -d out src/monticulo/*.java
+java -cp out monticulo.Main
+```
+
+`Main` genera valores aleatorios, muestra las raíces de ambos montículos, extrae sus elementos y compara el orden ascendente y descendente de un vector.
+
+## Pruebas
+
+Las clases de prueba verifican el estado inicial, inserción, consulta de la raíz, extracción, orden de prioridad y el comportamiento al superar la capacidad o eliminar de un montículo vacío.
+
+En Eclipse, importa el repositorio como proyecto Java y ejecuta `MonticuloMinimoTest` y `MonticuloMaximoTest` como pruebas **JUnit 4**. El `.classpath` ya declara las carpetas `src` y `test`, JavaSE-1.8 y el contenedor de JUnit 4.
+
+## Ideas para seguir practicando
+
+- Evitar la reconstrucción completa del montículo después de cada inserción y añadir pruebas de regresión.
+- Añadir una construcción de montículo desde un arreglo (`heapify`) y comparar su coste con insertar elemento por elemento.
+- Ampliar las pruebas con arreglos vacíos, un solo elemento, duplicados y valores extremos de `int`.
+- Generalizar la estructura para aceptar otros tipos y un `Comparator`.
+- Añadir configuración Maven o Gradle para compilar y ejecutar las pruebas desde línea de comandos.
